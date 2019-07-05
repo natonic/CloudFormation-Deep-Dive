@@ -1,0 +1,111 @@
+{
+    "AWSTemplateFormatVersion" : "2010-09-09",
+    
+    "Description" : "AWS CloudFormation Cross-Stack Reference Sample Template: Demonstrates how to reference resources from a different stack. This template provisions an EC2 instance in an EC2 Security Group provisioned in a different stack. **WARNING** This template creates an Amazon EC2 instance. You will be billed for the AWS resources used if you create a stack from this template.",
+  
+    "Parameters": {
+      "NetworkStackName": {
+        "Description": "Name of an active CloudFormation stack that contains the networking resources, such as the subnet and security group, that will be used in this stack.",
+        "Type": "String",
+        "MinLength" : 1,
+        "MaxLength" : 255,
+        "AllowedPattern" : "^[a-zA-Z][-a-zA-Z0-9]*$",
+        "Default" : "SampleNetworkCrossStack"
+      }
+    },
+  
+    "Mappings" : {
+      "AWSRegionArch2AMI" : {
+        "us-east-1"        : {"PV64" : "ami-8ff710e2", "HVM64" : "ami-f5f41398", "HVMG2" : "ami-4afd1d27"},
+        "us-west-2"        : {"PV64" : "ami-eff1028f", "HVM64" : "ami-d0f506b0", "HVMG2" : "ami-ee897b8e"},
+        "us-west-1"        : {"PV64" : "ami-ac85fbcc", "HVM64" : "ami-6e84fa0e", "HVMG2" : "ami-69106909"},
+        "eu-west-1"        : {"PV64" : "ami-23ab2250", "HVM64" : "ami-b0ac25c3", "HVMG2" : "ami-936de5e0"},
+        "eu-central-1"     : {"PV64" : "ami-27c12348", "HVM64" : "ami-d3c022bc", "HVMG2" : "ami-8e7092e1"},
+        "ap-northeast-1"   : {"PV64" : "ami-26160d48", "HVM64" : "ami-29160d47", "HVMG2" : "ami-91809aff"},
+        "ap-northeast-2"   : {"PV64" : "NOT_SUPPORTED", "HVM64" : "ami-cf32faa1", "HVMG2" : "NOT_SUPPORTED"},
+        "ap-southeast-1"   : {"PV64" : "ami-f3dd0a90", "HVM64" : "ami-1ddc0b7e", "HVMG2" : "ami-3c30e75f"},
+        "ap-southeast-2"   : {"PV64" : "ami-8f94b9ec", "HVM64" : "ami-0c95b86f", "HVMG2" : "ami-543d1137"},
+        "sa-east-1"        : {"PV64" : "ami-e188018d", "HVM64" : "ami-fb890097", "HVMG2" : "NOT_SUPPORTED"},
+        "cn-north-1"       : {"PV64" : "ami-77a46e1a", "HVM64" : "ami-05a66c68", "HVMG2" : "NOT_SUPPORTED"}
+      }
+    },
+  
+    "Resources" : {
+      "WebServerInstance": {  
+        "Type": "AWS::EC2::Instance",
+        "Metadata" : {
+          "AWS::CloudFormation::Init" : {
+            "configSets" : {
+              "All" : [ "ConfigureSampleApp" ]
+            },
+  
+            "ConfigureSampleApp" : {
+              "packages" : {
+                "yum" : {
+                  "httpd" : []
+                }
+              },
+  
+              "files" : {
+                "/var/www/html/index.html" : {
+                  "content" : { "Fn::Join" : ["\n", [
+                    "<img src=\"https://s3.amazonaws.com/cloudformation-examples/cloudformation_graphic.png\" alt=\"AWS CloudFormation Logo\"/>",
+                    "<h1>Congratulations, you have successfully launched the AWS CloudFormation sample.</h1>"
+                  ]]},
+                  "mode"    : "000644",
+                  "owner"   : "root",
+                  "group"   : "root"
+                }
+              },
+  
+              "services" : {
+                "sysvinit" : {
+                  "httpd"    : { "enabled" : "true", "ensureRunning" : "true" }
+                }
+              }
+            }
+          }
+        },
+        "Properties": {
+          "InstanceType"   : "t2.micro",
+          "ImageId": { "Fn::FindInMap": [ "AWSRegionArch2AMI", { "Ref": "AWS::Region" } , "HVM64" ] },
+          "NetworkInterfaces" : [{
+            "GroupSet"                 : [{ "Fn::ImportValue" :  {"Fn::Sub": "${NetworkStackName}-SecurityGroupID" } }],
+            "AssociatePublicIpAddress" : "true",
+            "DeviceIndex"              : "0",
+            "DeleteOnTermination"      : "true",
+            "SubnetId"                 : { "Fn::ImportValue" : {"Fn::Sub": "${NetworkStackName}-SubnetID" } }
+          }],
+          "UserData"       : { "Fn::Base64" : { "Fn::Join" : ["", [
+               "#!/bin/bash -xe\n",
+               "yum update -y aws-cfn-bootstrap\n",
+  
+               "# Install the files and packages from the metadata\n",
+               "/opt/aws/bin/cfn-init -v ",
+               "         --stack ", { "Ref" : "AWS::StackName" },
+               "         --resource WebServerInstance ",
+               "         --configsets All ",
+               "         --region ", { "Ref" : "AWS::Region" }, "\n",
+  
+               "# Signal the status from cfn-init\n",
+               "/opt/aws/bin/cfn-signal -e $? ",
+               "         --stack ", { "Ref" : "AWS::StackName" },
+               "         --resource WebServerInstance ",
+               "         --region ", { "Ref" : "AWS::Region" }, "\n"
+          ]]}}        
+        },
+        "CreationPolicy" : {
+          "ResourceSignal" : {
+            "Timeout" : "PT5M"
+          }
+        }
+      }
+    },
+  
+    "Outputs" : {
+      "URL" : {
+        "Description" : "URL of the sample website",
+        "Value" :  { "Fn::Join" : [ "", [ "http://", { "Fn::GetAtt" : [ "WebServerInstance", "PublicDnsName" ]}]]}
+      }
+    }
+  }
