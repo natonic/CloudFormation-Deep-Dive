@@ -1,0 +1,46 @@
+{
+    "Version":"2012-10-17",
+    "Statement":[{
+        "Effect":"Allow",
+        "Action":[
+            "cloudformation:DescribeStacks",
+            "cloudformation:DescribeStackEvents",
+            "cloudformation:DescribeStackResource",
+            "cloudformation:DescribeStackResources"
+        ],
+        "Resource":"*"
+    }]
+}
+
+
+
+{
+    "Version":"2012-10-17",
+    "Statement":[{
+        "Effect":"Allow",
+        "Action":[
+            "sqs:*",
+            "cloudformation:CreateStack",
+            "cloudformation:DescribeStacks",
+            "cloudformation:DescribeStackEvents",
+            "cloudformation:DescribeStackResources",
+            "cloudformation:GetTemplate",
+            "cloudformation:ValidateTemplate"  
+        ],
+        "Resource":"*"
+    }]
+}
+
+
+
+{
+    "Version":"2012-10-17",
+    "Statement":[{
+        "Effect":"Deny",
+        "Action":[
+            "cloudformation:DeleteStack",
+            "cloudformation:UpdateStack"
+        ],
+        "Resource":"arn:aws:cloudformation:us-east-1:123456789012:stack/MyProductionStack/*"
+    }]
+}
