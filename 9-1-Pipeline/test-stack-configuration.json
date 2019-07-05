@@ -1,0 +1,9 @@
+{
+  "Parameters" : {
+    "DBName" : "TestWordPressDB",
+    "DBPassword" : "pipelinedemo19",
+    "DBRootPassword" : "pipelinedemo19",
+    "DBUser" : "TestDBuser",    
+    "KeyName" : "blue"
+  }
+}
