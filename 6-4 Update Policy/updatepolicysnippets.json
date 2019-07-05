@@ -1,0 +1,26 @@
+"UpdatePolicy" : {
+  "AutoScalingRollingUpdate" : {
+    "MaxBatchSize" : Integer,
+    "MinInstancesInService" : Integer,
+    "MinSuccessfulInstancesPercent" : Integer,
+    "PauseTime" : String,
+    "SuspendProcesses" : [ List of processes ],
+    "WaitOnResourceSignals" : Boolean
+  }
+}
+
+
+
+"UpdatePolicy" : {
+    "AutoScalingReplacingUpdate" : {
+      "WillReplace" : Boolean
+    }
+  }
+
+
+
+  "UpdatePolicy" : {
+    "AutoScalingScheduledAction" : {
+      "IgnoreUnmodifiedGroupSizeProperties" : Boolean
+    }
+  }
