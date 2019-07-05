@@ -1,0 +1,19 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Performs a periodic check of the given site, erroring out on test failure.
+Resources:
+  lambdacanary:
+    Properties:
+      CodeUri: s3://abucket4elb/bed69a985be5925f0213463f1ea91988
+      Description: Performs a periodic check of the given site, erroring out on test
+        failure.
+      Environment:
+        Variables:
+          expected: About Amazon
+          site: https://www.amazon.com/
+      Handler: lambda_function.lambda_handler
+      MemorySize: 128
+      Policies: []
+      Runtime: python3.7
+      Timeout: 10
+    Type: AWS::Serverless::Function
+Transform: AWS::Serverless-2016-10-31

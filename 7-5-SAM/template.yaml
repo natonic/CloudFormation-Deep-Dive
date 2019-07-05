@@ -1,0 +1,20 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: 'Performs a periodic check of the given site, erroring out on test failure.'
+Resources:
+  lambdacanary:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: lambda_function.lambda_handler
+      Runtime: python3.7
+      CodeUri: .
+      Description: >-
+        Performs a periodic check of the given site, erroring out on test
+        failure.
+      MemorySize: 128
+      Timeout: 10
+      Policies: []
+      Environment:
+        Variables:
+          site: 'https://www.hotmail.com/'
+          expected: Connect
