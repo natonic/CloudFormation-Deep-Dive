@@ -1,0 +1,41 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Add VPC Endpoint to S3 from private subnets'
+Parameters:
+  VpcId:
+    Description: The VPC ID of the VPC that this endpoint will be attached to
+    Type: AWS::EC2::VPC::Id
+    AllowedPattern: "[a-z0-9-]*"
+  RouteTableId:
+    Description: The Routing Table ID of the Routing Table that this endpoint will be added to
+    Type: String
+    AllowedPattern: "[a-z0-9-]*"
+Resources:
+  S3Endpoint: 
+    Type: "AWS::EC2::VPCEndpoint"
+    Properties: 
+      PolicyDocument: 
+        Version: 2012-10-17
+        Statement:
+            - Effect: Allow
+              Principal: '*'
+              Action:
+                - 's3:GetObject'
+                - 's3:PutObject'
+                - 's3:DeleteObject'
+              Resource:
+                - 'arn:aws:s3:::vpc-endpoint-demo/*'
+      RouteTableIds: 
+        - !Ref RouteTableId
+      ServiceName: !Join
+        - ''
+        - - com.amazonaws.
+          - !Ref 'AWS::Region'
+          - .s3
+      VpcId: !Ref VpcId
+Outputs:
+  StackName:
+    Description: 'Stack name'
+    Value: !Sub '${AWS::StackName}'
+  Endpoint:
+    Description: 'The VPC endpoint to S3.'
+    Value: !Ref S3Endpoint
