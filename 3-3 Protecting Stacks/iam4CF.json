@@ -1,0 +1,68 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "Stmt1449904348000",
+            "Effect": "Allow",
+            "Action": [
+                "cloudformation:CreateStack",
+                "cloudformation:CreateChangeSet",
+                "cloudformation:ListStacks",
+                "cloudformation:UpdateStack",
+                "cloudformation:DescribeChangeSet",
+                "cloudformation:ExecuteChangeSet"
+            ],
+            "Resource": [
+                "*"
+            ]
+        }
+    ]
+}
+
+
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "Stmt1449904348000",
+            "Effect": "Allow",
+            "Action": [
+                "cloudformation:CreateStack",
+                "cloudformation:CreateChangeSet",
+                "cloudformation:ListStacks",
+                "cloudformation:UpdateStack",
+                "cloudformation:DescribeStacks",
+                "cloudformation:DescribeStackResource",
+                "cloudformation:DescribeStackEvents",
+                "cloudformation:ValidateTemplate",
+                "cloudformation:DescribeChangeSet",
+                "cloudformation:ExecuteChangeSet"
+            ],
+            "Resource": [
+                "*"
+            ]
+        }
+    ]
+}
+
+
+
+{
+    "Type" : "AWS::IAM::Policy",
+    "Properties" : {
+    "PolicyName" : "CFNUsers",
+    "PolicyDocument" : {
+      "Version" : "2012-10-17",
+      "Statement": [ {
+      "Effect" : "Allow",
+      "Action" : [
+      "cloudformation:Describe*",
+      "cloudformation:List*",
+      "cloudformation:Get*"
+   ],
+      "Resource" : "*" 
+   } ]
+ },
+   "Groups" : [ { "Ref" : "CFNUserGroup" } ]
+} 
+}
