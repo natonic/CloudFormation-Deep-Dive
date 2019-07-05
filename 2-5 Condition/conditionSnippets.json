@@ -1,0 +1,82 @@
+
+Comment: Associating a Condition
+"NewVolume" : {
+    "Type" : "AWS::EC2::Volume",
+    "Condition" : "CreateProdResources",
+    "Properties" : {
+       "Size" : "100",
+       "AvailabilityZone" : { "Fn::GetAtt" : [ "EC2Instance", "AvailabilityZone" ]}
+  }
+
+
+  "NewVolume" : {
+    "Type" : "AWS::EC2::Volume",
+    "Properties" : {
+      "Size" : {
+        "Fn::If" : [
+          "CreateLargeSize",
+          "100",
+          "10"
+        ]},
+      "AvailabilityZone" : { "Fn::GetAtt" : [ "Ec2Instance", "AvailabilityZone" ]}
+    },
+    "DeletionPolicy" : "Snapshot"
+  }
+
+
+  "MyAndCondition": {
+    "Fn::And": [
+       {"Fn::Equals": ["sg-mysggroup", {"Ref": "ASecurityGroup"}]},
+       {"Condition": "SomeOtherCondition"}
+    ]
+ }
+
+
+
+ "Fn::And": [{condition}, {...}]
+
+ "MyAndCondition": {
+    "Fn::And": [
+       {"Fn::Equals": ["sg-mysggroup", {"Ref": "ASecurityGroup"}]},
+       {"Condition": "SomeOtherCondition"}
+    ]
+ }
+
+
+
+ "Fn::Equals" : ["value_1", "value_2"]
+
+ "UseProdCondition" : {
+    "Fn::Equals": [
+       {"Ref": "EnvironmentType"},
+       "prod"
+    ]
+ }
+
+
+ "Fn::If": [condition_name, value_if_true, value_if_false]
+ 
+ "SecurityGroups" : [{
+    "Fn::If" : [
+      "CreateNewSecurityGroup",
+      {"Ref" : "NewSecurityGroup"},
+      {"Ref" : "ExistingSecurityGroup"}
+    ]
+  }]
+
+
+  "MyNotCondition" : {
+    "Fn::Not" : [{
+       "Fn::Equals" : [
+          {"Ref" : "EnvironmentType"},
+          "prod"
+       ]
+    }]
+ }
+
+ "MyOrCondition" : {
+    "Fn::Or" : [
+       {"Fn::Equals" : ["sg-mysggroup", {"Ref" : "ASecurityGroup"}]},
+       {"Condition" : "SomeOtherCondition"}
+    ]
+ }
