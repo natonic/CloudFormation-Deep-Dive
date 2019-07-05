@@ -1,0 +1,27 @@
+# key/value pair examples
+name : Mustang
+maker : Ford
+year : 2012
+milage : 40,000
+issues:
+   - hood dent
+   - fender rust
+   - brakes worn
+   - front tires tread wear
+#objects
+specs:
+  hp : 480
+  weight : 4 tons
+  type : 4 door
+  roof : hard top
+
+#lists containing dictionaries
+cars:
+  - Mustang:
+      year : 2012
+      make : 4 door
+      model : GT
+  - Corvette:
+      year : 1972
+      make : 2 door
+      model : Stringray
