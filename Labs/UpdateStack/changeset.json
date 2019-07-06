@@ -1,0 +1,343 @@
+,
+    "WebServerInstance2": {
+        "Type": "AWS::EC2::Instance",
+        "Metadata": {
+            "AWS::CloudFormation::Init": {
+                "configSets": {
+                    "InstallAndRun": [
+                        "Install",
+                        "Configure"
+                    ]
+                },
+                "Install": {
+                    "packages": {
+                        "yum": {
+                            "mysql": [],
+                            "mysql-server": [],
+                            "mysql-libs": [],
+                            "httpd": [],
+                            "php": [],
+                            "php-mysql": []
+                        }
+                    },
+                    "files": {
+                        "/var/www/html/index.php": {
+                            "content": {
+                                "Fn::Join": [
+                                    "",
+                                    [
+                                        "<html>\n",
+                                        "  <head>\n",
+                                        "    <title>AWS CloudFormation PHP Sample</title>\n",
+                                        "    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=ISO-8859-1\">\n",
+                                        "  </head>\n",
+                                        "  <body>\n",
+                                        "    <h1>Welcome to the AWS CloudFormation PHP Sample</h1>\n",
+                                        "    <p/>\n",
+                                        "    <?php\n",
+                                        "      // Print out the current data and time\n",
+                                        "      print \"The Current Date and Time is: <br/>\";\n",
+                                        "      print date(\"g:i A l, F j Y.\");\n",
+                                        "    ?>\n",
+                                        "    <p/>\n",
+                                        "    <?php\n",
+                                        "      // Setup a handle for CURL\n",
+                                        "      $curl_handle=curl_init();\n",
+                                        "      curl_setopt($curl_handle,CURLOPT_CONNECTTIMEOUT,2);\n",
+                                        "      curl_setopt($curl_handle,CURLOPT_RETURNTRANSFER,1);\n",
+                                        "      // Get the hostname of the intance from the instance metadata\n",
+                                        "      curl_setopt($curl_handle,CURLOPT_URL,'http://169.254.169.254/latest/meta-data/public-hostname');\n",
+                                        "      $hostname = curl_exec($curl_handle);\n",
+                                        "      if (empty($hostname))\n",
+                                        "      {\n",
+                                        "        print \"Sorry, for some reason, we got no hostname back <br />\";\n",
+                                        "      }\n",
+                                        "      else\n",
+                                        "      {\n",
+                                        "        print \"Server = \" . $hostname . \"<br />\";\n",
+                                        "      }\n",
+                                        "      // Get the instance-id of the intance from the instance metadata\n",
+                                        "      curl_setopt($curl_handle,CURLOPT_URL,'http://169.254.169.254/latest/meta-data/instance-id');\n",
+                                        "      $instanceid = curl_exec($curl_handle);\n",
+                                        "      if (empty($instanceid))\n",
+                                        "      {\n",
+                                        "        print \"Sorry, for some reason, we got no instance id back <br />\";\n",
+                                        "      }\n",
+                                        "      else\n",
+                                        "      {\n",
+                                        "        print \"EC2 instance-id = \" . $instanceid . \"<br />\";\n",
+                                        "      }\n",
+                                        "      $Database   = \"localhost\";\n",
+                                        "      $DBUser     = \"",
+                                        {
+                                            "Ref": "DBUser"
+                                        },
+                                        "\";\n",
+                                        "      $DBPassword = \"",
+                                        {
+                                            "Ref": "DBPassword"
+                                        },
+                                        "\";\n",
+                                        "      print \"Database = \" . $Database . \"<br />\";\n",
+                                        "      $dbconnection = mysql_connect($Database, $DBUser, $DBPassword)\n",
+                                        "                      or die(\"Could not connect: \" . mysql_error());\n",
+                                        "      print (\"Connected to $Database successfully\");\n",
+                                        "      mysql_close($dbconnection);\n",
+                                        "    ?>\n",
+                                        "    <h2>PHP Information</h2>\n",
+                                        "    <p/>\n",
+                                        "    <?php\n",
+                                        "      phpinfo();\n",
+                                        "    ?>\n",
+                                        "  </body>\n",
+                                        "</html>\n"
+                                    ]
+                                ]
+                            },
+                            "mode": "000600",
+                            "owner": "apache",
+                            "group": "apache"
+                        },
+                        "/tmp/setup.mysql": {
+                            "content": {
+                                "Fn::Join": [
+                                    "",
+                                    [
+                                        "CREATE DATABASE ",
+                                        {
+                                            "Ref": "DBName"
+                                        },
+                                        ";\n",
+                                        "GRANT ALL ON ",
+                                        {
+                                            "Ref": "DBName"
+                                        },
+                                        ".* TO '",
+                                        {
+                                            "Ref": "DBUser"
+                                        },
+                                        "'@localhost IDENTIFIED BY '",
+                                        {
+                                            "Ref": "DBPassword"
+                                        },
+                                        "';\n"
+                                    ]
+                                ]
+                            },
+                            "mode": "000400",
+                            "owner": "root",
+                            "group": "root"
+                        },
+                        "/etc/cfn/cfn-hup.conf": {
+                            "content": {
+                                "Fn::Join": [
+                                    "",
+                                    [
+                                        "[main]\n",
+                                        "stack=",
+                                        {
+                                            "Ref": "AWS::StackId"
+                                        },
+                                        "\n",
+                                        "region=",
+                                        {
+                                            "Ref": "AWS::Region"
+                                        },
+                                        "\n"
+                                    ]
+                                ]
+                            },
+                            "mode": "000400",
+                            "owner": "root",
+                            "group": "root"
+                        },
+                        "/etc/cfn/hooks.d/cfn-auto-reloader.conf": {
+                            "content": {
+                                "Fn::Join": [
+                                    "",
+                                    [
+                                        "[cfn-auto-reloader-hook]\n",
+                                        "triggers=post.update\n",
+                                        "path=Resources.WebServerInstance.Metadata.AWS::CloudFormation::Init\n",
+                                        "action=/opt/aws/bin/cfn-init -v ",
+                                        "         --stack ",
+                                        {
+                                            "Ref": "AWS::StackName"
+                                        },
+                                        "         --resource WebServerInstance ",
+                                        "         --configsets InstallAndRun ",
+                                        "         --region ",
+                                        {
+                                            "Ref": "AWS::Region"
+                                        },
+                                        "\n",
+                                        "runas=root\n"
+                                    ]
+                                ]
+                            },
+                            "mode": "000400",
+                            "owner": "root",
+                            "group": "root"
+                        }
+                    },
+                    "services": {
+                        "sysvinit": {
+                            "mysqld": {
+                                "enabled": "true",
+                                "ensureRunning": "true"
+                            },
+                            "httpd": {
+                                "enabled": "true",
+                                "ensureRunning": "true"
+                            },
+                            "cfn-hup": {
+                                "enabled": "true",
+                                "ensureRunning": "true",
+                                "files": [
+                                    "/etc/cfn/cfn-hup.conf",
+                                    "/etc/cfn/hooks.d/cfn-auto-reloader.conf"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "Configure": {
+                    "commands": {
+                        "01_set_mysql_root_password": {
+                            "command": {
+                                "Fn::Join": [
+                                    "",
+                                    [
+                                        "mysqladmin -u root password '",
+                                        {
+                                            "Ref": "DBRootPassword"
+                                        },
+                                        "'"
+                                    ]
+                                ]
+                            },
+                            "test": {
+                                "Fn::Join": [
+                                    "",
+                                    [
+                                        "$(mysql ",
+                                        {
+                                            "Ref": "DBName"
+                                        },
+                                        " -u root --password='",
+                                        {
+                                            "Ref": "DBRootPassword"
+                                        },
+                                        "' >/dev/null 2>&1 </dev/null); (( $? != 0 ))"
+                                    ]
+                                ]
+                            }
+                        },
+                        "02_create_database": {
+                            "command": {
+                                "Fn::Join": [
+                                    "",
+                                    [
+                                        "mysql -u root --password='",
+                                        {
+                                            "Ref": "DBRootPassword"
+                                        },
+                                        "' < /tmp/setup.mysql"
+                                    ]
+                                ]
+                            },
+                            "test": {
+                                "Fn::Join": [
+                                    "",
+                                    [
+                                        "$(mysql ",
+                                        {
+                                            "Ref": "DBName"
+                                        },
+                                        " -u root --password='",
+                                        {
+                                            "Ref": "DBRootPassword"
+                                        },
+                                        "' >/dev/null 2>&1 </dev/null); (( $? != 0 ))"
+                                    ]
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "Properties": {
+            "ImageId": {
+                "Fn::FindInMap": [
+                    "AWSRegionArch2AMI",
+                    {
+                        "Ref": "AWS::Region"
+                    },
+                    {
+                        "Fn::FindInMap": [
+                            "AWSInstanceType2Arch",
+                            {
+                                "Ref": "InstanceType"
+                            },
+                            "Arch"
+                        ]
+                    }
+                ]
+            },
+            "InstanceType": {
+                "Ref": "InstanceType"
+            },
+            "SubnetId": {
+                "Ref": "MySubnet"
+            },
+            "SecurityGroupIds": [
+                {
+                    "Ref": "MySG"
+                }
+            ],
+            "KeyName": {
+                "Ref": "KeyName"
+            },
+            "UserData": {
+                "Fn::Base64": {
+                    "Fn::Join": [
+                        "",
+                        [
+                            "#!/bin/bash -xe\n",
+                            "yum update -y aws-cfn-bootstrap\n",
+                            "# Install the files and packages from the metadata\n",
+                            "/opt/aws/bin/cfn-init -v ",
+                            "         --stack ",
+                            {
+                                "Ref": "AWS::StackName"
+                            },
+                            "         --resource WebServerInstance ",
+                            "         --configsets InstallAndRun ",
+                            "         --region ",
+                            {
+                                "Ref": "AWS::Region"
+                            },
+                            "\n",
+                            "# Signal the status from cfn-init\n",
+                            "/opt/aws/bin/cfn-signal -e $? ",
+                            "         --stack ",
+                            {
+                                "Ref": "AWS::StackName"
+                            },
+                            "         --resource WebServerInstance ",
+                            "         --region ",
+                            {
+                                "Ref": "AWS::Region"
+                            },
+                            "\n"
+                        ]
+                    ]
+                }
+            }
+        },
+        "CreationPolicy": {
+            "ResourceSignal": {
+                "Timeout": "PT5M"
+            }
+        }
