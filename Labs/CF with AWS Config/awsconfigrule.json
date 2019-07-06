@@ -1,0 +1,84 @@
+{
+  "Resources": {
+    "AWSConfigRule": {
+      "Type": "AWS::Config::ConfigRule",
+      "Properties": {
+        "ConfigRuleName": {
+          "Ref": "ConfigRuleName"
+        },
+        "Description": "Checks whether your EC2 instances are of the specified instance types.",
+        "InputParameters": {
+          "instanceType": {
+            "Fn::If": [
+              "instanceType",
+              {
+                "Ref": "instanceType"
+              },
+              {
+                "Ref": "AWS::NoValue"
+              }
+            ]
+          }
+        },
+        "Scope": {
+          "ComplianceResourceTypes": [
+            "AWS::EC2::Instance"
+          ]
+        },
+        "Source": {
+          "Owner": "AWS",
+          "SourceIdentifier": "DESIRED_INSTANCE_TYPE"
+        }
+      }
+    }
+  },
+  "Parameters": {
+    "ConfigRuleName": {
+      "Type": "String",
+      "Default": "desired-instance-type",
+      "Description": "The name that you assign to the AWS Config rule.",
+      "MinLength": "1",
+      "ConstraintDescription": "This parameter is required."
+    },
+    "instanceType": {
+      "Type": "String",
+      "Description": "Comma separated list of EC2 instance types (for example, \u0027t2.small, m4.large\u0027).",
+      "MinLength": "1",
+      "ConstraintDescription": "This parameter is required."
+    }
+  },
+  "Metadata": {
+    "AWS::CloudFormation::Interface": {
+      "ParameterGroups": [
+        {
+          "Label": {
+            "default": "Required"
+          },
+          "Parameters": [
+            "instanceType"
+          ]
+        },
+        {
+          "Label": {
+            "default": "Optional"
+          },
+          "Parameters": []
+        }
+      ]
+    }
+  },
+  "Conditions": {
+    "instanceType": {
+      "Fn::Not": [
+        {
+          "Fn::Equals": [
+            "",
+            {
+              "Ref": "instanceType"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
