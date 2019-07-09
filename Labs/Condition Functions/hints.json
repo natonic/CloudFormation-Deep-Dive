@@ -1,0 +1,13 @@
+"Conditions" : {
+    "VPCTenancy" : {"Fn::Equals" : [{"Ref" : "Tenancy"}, "dedicated"]}
+},
+
+
+
+"InstanceTenancy" : {
+    "Fn::If" : [
+        "VPCTenancy",
+        "dedicated",
+        "default"
+    ]},
+
