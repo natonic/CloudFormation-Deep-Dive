@@ -312,7 +312,7 @@
                             {
                                 "Ref": "AWS::StackName"
                             },
-                            "         --resource WebServerInstance ",
+                            "         --resource WebServerInstance2 ",
                             "         --configsets InstallAndRun ",
                             "         --region ",
                             {
@@ -325,7 +325,7 @@
                             {
                                 "Ref": "AWS::StackName"
                             },
-                            "         --resource WebServerInstance ",
+                            "         --resource WebServerInstance2 ",
                             "         --region ",
                             {
                                 "Ref": "AWS::Region"
