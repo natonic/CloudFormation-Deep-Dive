@@ -468,9 +468,10 @@ Resources:
       ImageId: !FindInMap [AWSRegionArch2AMI, !Ref 'AWS::Region', !FindInMap [AWSInstanceType2Arch, !Ref InstanceType, Arch]]      
       InstanceType:
         Ref: InstanceType
+      SubnetId: 'subnet-0bee65ac47de334a6'
       KeyName:
         Ref: KeyName
-      SecurityGroups:
+      SecurityGroupIds:
       - Ref: WebServerSecurityGroup
       UserData:
         Fn::Base64: !Sub |
@@ -491,6 +492,7 @@ Resources:
         FromPort: '22'
         IpProtocol: tcp
         ToPort: '22'
+      VpcId: 'vpc-04536c44a4fcfba33'
 Outputs:
   PublicIP:
     Description: EC2 public IP

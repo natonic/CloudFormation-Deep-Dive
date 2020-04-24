@@ -1,0 +1,9 @@
+{
+  "Parameters" : {
+    "DBName" : "TestWordPressDB",
+    "DBPassword" : "K7HhweADMTaG3Goe",
+    "DBRootPassword" : "K7HhweADMTaG3Goe",
+    "DBUser" : "TestDBuser",    
+    "KeyName" : "code-pipeline-test-key"
+  }
+}
