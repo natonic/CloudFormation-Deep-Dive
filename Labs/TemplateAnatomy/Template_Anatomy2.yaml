@@ -39,8 +39,8 @@ Mappings:
       Arch: NATHVM64      
   AWSRegionArch2AMI:
     us-east-1:
-      HVM64: ami-eb36759a
-      HVMG2: ami-47317236
+      HVM64: ami-0beafb294c86717a8
+      HVMG2: ami-02354e95b39ca8dec
     us-west-2:
       HVM64: ami-041fcb43d4730cf32
       HVMG2: ami-0873b46c45c11058d
@@ -72,23 +72,23 @@ Mappings:
       HVM64: ami-0e740663443574970
       HVMG2: ami-043bb1ed348aaf857
     ap-southeast-1:
-      HVM64: ami-05b3bcf7f311194b3
-      HVMG2: ami-0e46ce0d6a87dc979
+      HVM64: ami-00c3854c1706a382f 
+      HVMG2: ami-0cd31be676780afa7
     ap-southeast-2:
-      HVM64: ami-02fd0b06f06d93dfc
-      HVMG2: ami-0c0ab057a101d8ff2
+      HVM64: ami-09ba19d0563c3d553
+      HVMG2: ami-0ded330691a314693
     ap-south-1:
-      HVM64: ami-0ad42f4f66f6c1cc9
-      HVMG2: ami-0244c1d42815af84a
+      HVM64: ami-0571d68822206714c
+      HVMG2: ami-0ebc1ac48dfd14136
     us-east-2:
-      HVM64: ami-0cd3dfa4e37921605
-      HVMG2: NOT_SUPPORTED
+      HVM64: ami-0f4665edc97a93bea
+      HVMG2: ami-07c8bc5c1ce9598c3
     ca-central-1:
-      HVM64: ami-07423fb63ea0a0930
-      HVMG2: NOT_SUPPORTED
+      HVM64: ami-0a7c38a2574890e5c
+      HVMG2: ami-013d1df4bcea6ba95
     sa-east-1:
-      HVM64: ami-05145e0b28ad8e0b2
-      HVMG2: NOT_SUPPORTED
+      HVM64: ami-0cd294bc0ed0be0e4
+      HVMG2: ami-018ccfb6b4745882a
     cn-north-1:
       HVM64: ami-053617c9d818c1189
       HVMG2: NOT_SUPPORTED
