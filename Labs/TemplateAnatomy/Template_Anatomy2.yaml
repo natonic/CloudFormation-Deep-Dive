@@ -18,63 +18,9 @@ Parameters:
   InstanceType:
     Description: WebServer EC2 instance type
     Type: String
-    Default: t2.small
+    Default: t3.micro
     AllowedValues:
-      - t1.micro
-      - t2.nano
-      - t2.micro
-      - t2.small
-      - t2.medium
-      - t2.large
       - t3.micro
-      - m1.small
-      - m1.medium
-      - m1.large
-      - m1.xlarge
-      - m2.xlarge
-      - m2.2xlarge
-      - m2.4xlarge
-      - m3.medium
-      - m3.large
-      - m3.xlarge
-      - m3.2xlarge
-      - m4.large
-      - m4.xlarge
-      - m4.2xlarge
-      - m4.4xlarge
-      - m4.10xlarge
-      - c1.medium
-      - c1.xlarge
-      - c3.large
-      - c3.xlarge
-      - c3.2xlarge
-      - c3.4xlarge
-      - c3.8xlarge
-      - c4.large
-      - c4.xlarge
-      - c4.2xlarge
-      - c4.4xlarge
-      - c4.8xlarge
-      - g2.2xlarge
-      - g2.8xlarge
-      - r3.large
-      - r3.xlarge
-      - r3.2xlarge
-      - r3.4xlarge
-      - r3.8xlarge
-      - i2.xlarge
-      - i2.2xlarge
-      - i2.4xlarge
-      - i2.8xlarge
-      - d2.xlarge
-      - d2.2xlarge
-      - d2.4xlarge
-      - d2.8xlarge
-      - hi1.4xlarge
-      - hs1.8xlarge
-      - cr1.8xlarge
-      - cc2.8xlarge
-      - cg1.4xlarge
     ConstraintDescription: must be a valid EC2 instance type.
   SSHLocation:
     Description: The IP address range that can be used to SSH to the EC2 instances
@@ -108,23 +54,23 @@ Mappings:
       HVM64: ami-01ac84be28584498d
       HVMG2: ami-0a13d44dccf1f5cf6
     eu-west-3:
-      HVM64: ami-0dd7e7ed60da8fb83
-      HVMG2: NOT_SUPPORTED
+      HVM64: ami-0a682c61cac068f2f
+      HVMG2: ami-093fa4c538885becf 
     eu-central-1:
-      HVM64: ami-0cfbf4f6db41068ac
-      HVMG2: ami-0aa1822e3eb913a11
+      HVM64: ami-05d403b512bf100eb
+      HVMG2: ami-0c115dbd34c69a004
     eu-north-1:
-      HVM64: ami-86fe70f8
-      HVMG2: ami-32d55b4c
+      HVM64: ami-0dd62557e4298551a
+      HVMG2: ami-039609244d2810a6b
     ap-northeast-1:
-      HVM64: ami-00a5245b4816c38e6
-      HVMG2: ami-09d0e0e099ecabba2
+      HVM64: ami-0d1e3062992b86514
+      HVMG2: ami-0cc75a8978fbbc969
     ap-northeast-2:
-      HVM64: ami-00dc207f8ba6dc919
-      HVMG2: NOT_SUPPORTED
+      HVM64: ami-07a28b8671656c8c1
+      HVMG2: ami-0bd7691bf6470fe9c
     ap-northeast-3:
-      HVM64: ami-0b65f69a5c11f3522
-      HVMG2: NOT_SUPPORTED
+      HVM64: ami-0e740663443574970
+      HVMG2: ami-043bb1ed348aaf857
     ap-southeast-1:
       HVM64: ami-05b3bcf7f311194b3
       HVMG2: ami-0e46ce0d6a87dc979
