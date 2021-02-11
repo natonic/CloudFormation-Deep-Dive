@@ -1,21 +1,8 @@
----
-AWSTemplateFormatVersion: "2010-09-09"
-# The AWS CloudFormation template version that the template conforms to.
-
-# this is single line comment.
-
-# this
-# is a multiple
-# line comment
-
-Description:
-# Use the description to explain the purpose of the template. What does it create?
-  This template creates an EC2 instance based on the region and selection of an AMI ID. It also will create a Security Group.
-
-
+AWSTemplateFormatVersion: 2010-09-09
+Description: >-
+  This template creates an EC2 instance based on the region and selection of an
+  AMI ID. It also will create a Security Group.
 Parameters:
-# Values to pass to your template at runtime (when you create or update a stack). 
-# You can refer to parameters from the Resources and Outputs sections of the template.
   MySubnet:
     Description: My subnet from my VPC
     Type: String
@@ -97,11 +84,8 @@ Parameters:
     Default: 0.0.0.0/0
     AllowedPattern: '(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/(\d{1,2})'
     ConstraintDescription: must be a valid IP CIDR range of the form x.x.x.x/x.
-
 Mappings:
-# A mapping of keys and associated values that you can use to specify conditional parameter values, similar to a lookup table. 
-# You can match a key to a corresponding value by using the Fn::FindInMap intrinsic function in the Resources and Outputs sections.
- AWSInstanceType2Arch:
+  AWSInstanceType2Arch:
     t1.micro:
       Arch: HVM64
     t2.nano:
@@ -115,7 +99,7 @@ Mappings:
     t2.large:
       Arch: HVM64
     t3.micro:
-      Arch: HVM64      
+      Arch: HVM64
     m1.small:
       Arch: HVM64
     m1.medium:
@@ -210,7 +194,7 @@ Mappings:
       Arch: HVM64
     cc2.8xlarge:
       Arch: HVM64
- AWSInstanceType2NATArch:
+  AWSInstanceType2NATArch:
     t1.micro:
       Arch: NATHVM64
     t2.nano:
@@ -224,7 +208,7 @@ Mappings:
     t2.large:
       Arch: NATHVM64
     t3.micro:
-      Arch: NATHVM64      
+      Arch: NATHVM64
     m1.small:
       Arch: NATHVM64
     m1.medium:
@@ -337,7 +321,7 @@ Mappings:
       HVMG2: ami-0a13d44dccf1f5cf6
     eu-west-3:
       HVM64: ami-0a682c61cac068f2f
-      HVMG2: ami-093fa4c538885becf 
+      HVMG2: ami-093fa4c538885becf
     eu-central-1:
       HVM64: ami-05d403b512bf100eb
       HVMG2: ami-0c115dbd34c69a004
@@ -354,7 +338,7 @@ Mappings:
       HVM64: ami-0e740663443574970
       HVMG2: ami-043bb1ed348aaf857
     ap-southeast-1:
-      HVM64: ami-00c3854c1706a382f 
+      HVM64: ami-00c3854c1706a382f
       HVMG2: ami-0cd31be676780afa7
     ap-southeast-2:
       HVM64: ami-09ba19d0563c3d553
@@ -377,28 +361,24 @@ Mappings:
     cn-northwest-1:
       HVM64: ami-0f7937761741dc640
       HVMG2: NOT_SUPPORTED
-
-Resources:
-# Specifies the stack resources and their properties
-EC2Instance:
-    Type: 'AWS::EC2::Instance'
-    Properties:
-      InstanceType: !Ref InstanceType
-      SubnetId: !Ref MySubnet
-      SecurityGroupIds:
-        - !Ref MySG
-      KeyName: !Ref KeyName
-      ImageId: !FindInMap 
-        - AWSRegionArch2AMI
-        - !Ref 'AWS::Region'
-        - !FindInMap 
-          - AWSInstanceType2Arch
-          - !Ref InstanceType
-          - Arch
-
+Resources: 
+ EC2Instance:
+  Type: 'AWS::EC2::Instance'
+  Properties:
+    InstanceType: !Ref InstanceType
+    SubnetId: !Ref MySubnet
+    SecurityGroupIds:
+      - !Ref MySG
+    KeyName: !Ref KeyName
+    ImageId: !FindInMap 
+      - AWSRegionArch2AMI
+      - !Ref 'AWS::Region'
+      - !FindInMap 
+        - AWSInstanceType2Arch
+        - !Ref InstanceType
+        - Arch
 Outputs:
-# Describes the values that are returned whenever you view your stack's properties. 
- InstanceId:
+  InstanceId:
     Description: InstanceId of the newly created EC2 instance
     Value: !Ref EC2Instance
   AZ:
@@ -416,3 +396,4 @@ Outputs:
     Value: !GetAtt 
       - EC2Instance
       - PublicIp
+
