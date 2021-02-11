@@ -210,7 +210,7 @@ Mappings:
       Arch: HVM64
     cc2.8xlarge:
       Arch: HVM64
-  AWSInstanceType2NATArch:
+ AWSInstanceType2NATArch:
     t1.micro:
       Arch: NATHVM64
     t2.nano:
