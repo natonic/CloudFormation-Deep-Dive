@@ -194,7 +194,7 @@
     }
 ,
     "AWSRegionArch2AMI" : {
-      "us-east-1"        : {"HVM64" : "ami-0beafb294c86717a8", "HVMG2" : "ami-02354e95b39ca8dec"},
+      "us-east-1"        : {"HVM64" : "ami-0080e4c5bc078760e", "HVMG2" : "ami-0aeb704d503081ea6"},
       "us-west-2"        : {"HVM64" : "ami-01e24be29428c15b2", "HVMG2" : "ami-0fe84a5b4563d8f27"},
       "us-west-1"        : {"HVM64" : "ami-0ec6517f6edbf8044", "HVMG2" : "ami-0a7fc72dc0e51aa77"},
       "eu-west-1"        : {"HVM64" : "ami-08935252a36e25f85", "HVMG2" : "ami-0d5299b1c6112c3c7"},
@@ -394,7 +394,7 @@
       },
       "CreationPolicy" : {
         "ResourceSignal" : {
-          "Timeout" : "PT10M"
+          "Timeout" : "PT5M"
         }
       }
     }       
