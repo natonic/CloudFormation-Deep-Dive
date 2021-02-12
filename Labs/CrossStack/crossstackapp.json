@@ -16,7 +16,7 @@
   
     "Mappings" : {
       "AWSRegionArch2AMI" : {
-        "us-east-1"        : {"PV64" : "ami-8ff710e2", "HVM64" : "ami-f5f41398", "HVMG2" : "ami-4afd1d27"},
+        "us-east-1"        : {"PV64" : "ami-05a91a726af26a821", "HVM64" : "ami-0beafb294c86717a8", "HVMG2" : "ami-02354e95b39ca8dec"},
         "us-west-2"        : {"PV64" : "ami-eff1028f", "HVM64" : "ami-d0f506b0", "HVMG2" : "ami-ee897b8e"},
         "us-west-1"        : {"PV64" : "ami-ac85fbcc", "HVM64" : "ami-6e84fa0e", "HVMG2" : "ami-69106909"},
         "eu-west-1"        : {"PV64" : "ami-23ab2250", "HVM64" : "ami-b0ac25c3", "HVMG2" : "ami-936de5e0"},
