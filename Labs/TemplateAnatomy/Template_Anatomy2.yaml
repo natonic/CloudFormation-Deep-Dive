@@ -5,12 +5,10 @@ Description: >-
 Parameters:
   MySubnet:
     Description: My subnet from my VPC
-    Type: String
-    Default: subnet-YYYYYYYY
+    Type: 'AWS::EC2::Subnet::Id'
   MySG:
     Description: My Security Group from my VPC
-    Type: String
-    Default: SG-YYYYYYYY
+    Type: List<AWS::EC2::SecurityGroup::Id>
   KeyName:
     Description: Name of an existing EC2 KeyPair to enable SSH access to the instance
     Type: 'AWS::EC2::KeyPair::KeyName'
